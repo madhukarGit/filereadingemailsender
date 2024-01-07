@@ -38,15 +38,18 @@ class FileReaderImplTest {
     public void setUp(){
         HousingProduction housingProduction = new HousingProduction();
 
-        fileReader = new FileReaderImpl(emailService,housingRepository);
-
-        ReflectionTestUtils.setField(fileReader,"batchSize",50);
-
         when(javaMailSender.createMimeMessage()).thenReturn(new MimeMessage((Session) null));
         doNothing().when(javaMailSender).send(any(MimeMessage.class));
 
         when(housingRepository.saveAll(any())).thenReturn(List.of(housingProduction));
-        emailService = new EmailServiceImpl(javaMailSender);
+
+        when(emailService.sendMailWithAttachment(any(/**/))).thenReturn(any());
+
+        fileReader = new FileReaderImpl(emailService,housingRepository);
+
+        ReflectionTestUtils.setField(fileReader,"batchSize",50);
+
+
     }
 
 
